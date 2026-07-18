@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "codex/**"]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: macos-15
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Verify generated Xcode project
+        run: |
+          ruby scripts/generate_xcodeproj.rb
+          git diff --exit-code -- Clippy.xcodeproj
+
+      - name: Run strict Swift tests
+        run: swift test -Xswiftc -strict-concurrency=complete -Xswiftc -warnings-as-errors
+
+      - name: Analyze the macOS target
+        run: |
+          xcodebuild \
+            -project Clippy.xcodeproj \
+            -target Clippy \
+            -configuration Release \
+            CODE_SIGNING_ALLOWED=NO \
+            analyze
+
+      - name: Build the universal Release app
+        run: |
+          xcodebuild \
+            -project Clippy.xcodeproj \
+            -scheme Clippy \
+            -configuration Release \
+            -destination 'generic/platform=macOS' \
+            ARCHS='arm64 x86_64' \
+            ONLY_ACTIVE_ARCH=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            build

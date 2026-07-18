@@ -31,6 +31,6 @@
 
 - [x] Add final light and dark screenshots to the README.
 - [x] Choose and add the repository license.
-- [ ] Enable GitHub Private Vulnerability Reporting.
+- [x] Enable GitHub Private Vulnerability Reporting.
 - [ ] Create the `v1.2.0` GitHub release from `CHANGELOG.md`.
 - [ ] Add the repository and Homebrew links to the portfolio.
