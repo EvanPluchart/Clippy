@@ -34,13 +34,14 @@ project_config_list = xid("configlist.project")
 app_config_list = xid("configlist.app")
 test_config_list = xid("configlist.tests")
 
-resource_paths = ["Clippy/Resources/Info.plist", "Clippy/Resources/Clippy.entitlements", "Clippy/Resources/ClippyDebug.entitlements", "Clippy/Resources/PrivacyInfo.xcprivacy", "Clippy/Resources/Assets.xcassets"]
+resource_paths = ["Clippy/Resources/Info.plist", "Clippy/Resources/Clippy.entitlements", "Clippy/Resources/ClippyDebug.entitlements", "Clippy/Resources/PrivacyInfo.xcprivacy", "Clippy/Resources/Assets.xcassets", "Clippy/Resources/Localizable.xcstrings"]
 all_files = APP_SOURCES + TEST_SOURCES + resource_paths
 
 file_refs = all_files.map do |path|
   type = if path.end_with?(".swift") then "sourcecode.swift"
          elsif path.end_with?(".xcassets") then "folder.assetcatalog"
          elsif path.end_with?(".plist") then "text.plist.xml"
+         elsif path.end_with?(".xcstrings") then "text.json.xcstrings"
          elsif path.end_with?(".entitlements") then "text.plist.entitlements"
          else "text.xml" end
   "\t\t#{xid("fileref.#{path}")} /* #{File.basename(path)} */ = {isa = PBXFileReference; lastKnownFileType = #{type}; path = \"#{path}\"; sourceTree = SOURCE_ROOT; };"
@@ -48,7 +49,7 @@ end
 file_refs << "\t\t#{app_product} /* Clippy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Clippy.app; sourceTree = BUILT_PRODUCTS_DIR; };"
 file_refs << "\t\t#{test_product} /* ClippyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClippyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };"
 
-build_files = (APP_SOURCES + TEST_SOURCES + ["Clippy/Resources/PrivacyInfo.xcprivacy", "Clippy/Resources/Assets.xcassets"]).map do |path|
+build_files = (APP_SOURCES + TEST_SOURCES + ["Clippy/Resources/PrivacyInfo.xcprivacy", "Clippy/Resources/Assets.xcassets", "Clippy/Resources/Localizable.xcstrings"]).map do |path|
   phase = path.start_with?("ClippyTests") ? "Sources" : (path.end_with?(".swift") ? "Sources" : "Resources")
   "\t\t#{xid("buildfile.#{path}")} /* #{File.basename(path)} in #{phase} */ = {isa = PBXBuildFile; fileRef = #{xid("fileref.#{path}")} /* #{File.basename(path)} */; };"
 end
@@ -74,7 +75,7 @@ app_settings = {
   "CODE_SIGN_ENTITLEMENTS" => "Clippy/Resources/Clippy.entitlements", "CODE_SIGN_STYLE" => "Automatic",
   "ASSETCATALOG_COMPILER_APPICON_NAME" => "AppIcon",
   "ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS" => "YES",
-  "COMBINE_HIDPI_IMAGES" => "YES", "CURRENT_PROJECT_VERSION" => "7", "DEVELOPMENT_TEAM" => '""',
+  "COMBINE_HIDPI_IMAGES" => "YES", "CURRENT_PROJECT_VERSION" => "8", "DEVELOPMENT_TEAM" => '""',
   "ENABLE_APP_SANDBOX" => "NO", "ENABLE_HARDENED_RUNTIME" => "YES",
   "GENERATE_INFOPLIST_FILE" => "NO", "INFOPLIST_FILE" => "Clippy/Resources/Info.plist",
   "LD_RUNPATH_SEARCH_PATHS" => '"$(inherited) @executable_path/../Frameworks"', "MARKETING_VERSION" => "1.2.0",
@@ -162,12 +163,12 @@ pbx = <<~PBX
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		#{project} = {isa = PBXProject; attributes = {BuildIndependentTargetsInParallel = 1; LastSwiftUpdateCheck = 2660; LastUpgradeCheck = 2660; TargetAttributes = {#{app_target} = {CreatedOnToolsVersion = 26.6;}; #{test_target} = {CreatedOnToolsVersion = 26.6; TestTargetID = #{app_target};};};}; buildConfigurationList = #{project_config_list}; compatibilityVersion = "Xcode 14.0"; developmentRegion = fr; hasScannedForEncodings = 0; knownRegions = (fr, Base); mainGroup = #{main_group}; productRefGroup = #{product_group}; projectDirPath = ""; projectRoot = ""; targets = (#{app_target}, #{test_target}); };
+		#{project} = {isa = PBXProject; attributes = {BuildIndependentTargetsInParallel = 1; LastSwiftUpdateCheck = 2660; LastUpgradeCheck = 2660; TargetAttributes = {#{app_target} = {CreatedOnToolsVersion = 26.6;}; #{test_target} = {CreatedOnToolsVersion = 26.6; TestTargetID = #{app_target};};};}; buildConfigurationList = #{project_config_list}; compatibilityVersion = "Xcode 14.0"; developmentRegion = fr; hasScannedForEncodings = 0; knownRegions = (fr, en, Base); mainGroup = #{main_group}; productRefGroup = #{product_group}; projectDirPath = ""; projectRoot = ""; targets = (#{app_target}, #{test_target}); };
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		#{app_resources_phase} = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (
-#{phase_files.call(["Clippy/Resources/PrivacyInfo.xcprivacy", "Clippy/Resources/Assets.xcassets"], "Resources")}
+#{phase_files.call(["Clippy/Resources/PrivacyInfo.xcprivacy", "Clippy/Resources/Assets.xcassets", "Clippy/Resources/Localizable.xcstrings"], "Resources")}
 			); runOnlyForDeploymentPostprocessing = 0; };
 		#{test_resources_phase} = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXResourcesBuildPhase section */

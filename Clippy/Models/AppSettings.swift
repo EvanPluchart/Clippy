@@ -8,9 +8,9 @@ enum DuplicatePolicy: String, Codable, CaseIterable, Identifiable {
     var id: String { rawValue }
     var title: String {
         switch self {
-        case .mergeAll: "Fusionner tous les doublons"
-        case .consecutiveOnly: "Doublons consécutifs seulement"
-        case .keepAll: "Tout conserver"
+        case .mergeAll: String(localized: "Fusionner tous les doublons")
+        case .consecutiveOnly: String(localized: "Doublons consécutifs seulement")
+        case .keepAll: String(localized: "Tout conserver")
         }
     }
 }
@@ -18,14 +18,20 @@ enum DuplicatePolicy: String, Codable, CaseIterable, Identifiable {
 enum RetentionPeriod: Int, Codable, CaseIterable, Identifiable {
     case sevenDays = 7, thirtyDays = 30, ninetyDays = 90, forever = 0
     var id: Int { rawValue }
-    var title: String { rawValue == 0 ? "Indéfiniment" : "\(rawValue) jours" }
+    var title: String {
+        rawValue == 0 ? String(localized: "Indéfiniment") : L10n.retentionPeriod(days: rawValue)
+    }
 }
 
 enum AppAppearance: String, Codable, CaseIterable, Identifiable {
     case system, light, dark
     var id: String { rawValue }
     var title: String {
-        switch self { case .system: "Système"; case .light: "Clair"; case .dark: "Sombre" }
+        switch self {
+        case .system: String(localized: "Système")
+        case .light: String(localized: "Clair")
+        case .dark: String(localized: "Sombre")
+        }
     }
     var colorScheme: NSAppearance.Name? {
         switch self { case .system: nil; case .light: .aqua; case .dark: .darkAqua }

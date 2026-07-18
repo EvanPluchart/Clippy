@@ -8,13 +8,13 @@ enum ClipboardItemType: String, Codable, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .plainText: "Texte"
-        case .richText: "Texte enrichi"
-        case .image: "Image"
-        case .url: "Lien"
-        case .file: "Fichier"
-        case .color: "Couleur"
-        case .unknown: "Autre"
+        case .plainText: String(localized: "Texte")
+        case .richText: String(localized: "Texte enrichi")
+        case .image: String(localized: "Image")
+        case .url: String(localized: "Lien")
+        case .file: String(localized: "Fichier")
+        case .color: String(localized: "Couleur")
+        case .unknown: String(localized: "Autre")
         }
     }
 

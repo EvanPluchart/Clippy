@@ -10,9 +10,11 @@ enum ClipboardStorageError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .imageTooLarge(let maximumBytes):
-            "L’image normalisée dépasse la limite de \(Int64(maximumBytes).formattedBytes)."
+            String(
+                localized: "L’image normalisée dépasse la limite de \(Int64(maximumBytes).formattedBytes)."
+            )
         case .imageDimensionsTooLarge(let maximumPixels):
-            "L’image dépasse la limite de \(maximumPixels.formatted()) pixels."
+            String(localized: "L’image dépasse la limite de \(maximumPixels.formatted()) pixels.")
         }
     }
 }

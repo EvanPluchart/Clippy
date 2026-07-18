@@ -28,7 +28,7 @@ final class ClipboardRepository: ObservableObject {
             refreshStatistics()
             lastError = nil
         } catch {
-            lastError = "Impossible de lire l’historique."
+            lastError = String(localized: "Impossible de lire l’historique.")
             Log.storage.error("History fetch failed: \(error.localizedDescription, privacy: .public)")
         }
     }
@@ -138,7 +138,7 @@ final class ClipboardRepository: ObservableObject {
         } catch {
             context.rollback()
             reload()
-            lastError = "Une opération n’a pas pu être enregistrée."
+            lastError = String(localized: "Une opération n’a pas pu être enregistrée.")
             Log.storage.error("Save failed: \(error.localizedDescription, privacy: .public)")
             return false
         }

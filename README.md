@@ -13,80 +13,143 @@
   ·
   <a href="CHANGELOG.md">Changelog</a>
   ·
+  <a href="CONTRIBUTING.md">Contributing</a>
+  ·
   <a href="SECURITY.md">Security</a>
 </p>
 
-Clippy brings a native `⌘⇧V` clipboard picker to macOS. It lives quietly in the menu bar, keeps clipboard history on the Mac, and pastes the selected item back into the app you were using—without requiring the full history window to stay open.
+<p align="center">
+  <img alt="macOS 14+" src="https://img.shields.io/badge/macOS-14%2B-black">
+  <img alt="Swift 6" src="https://img.shields.io/badge/Swift-6-F05138">
+  <img alt="CI status" src="https://img.shields.io/github/actions/workflow/status/EvanPluchart/Clippy/ci.yml?branch=main&label=CI">
+  <img alt="MIT License" src="https://img.shields.io/github/license/EvanPluchart/Clippy">
+</p>
 
-> Clippy 1.2 currently has a French interface. English localization is planned for the next release.
+Clippy adds a native `⌘⇧V` clipboard picker to macOS. It stays quietly in the menu bar, keeps clipboard history on your Mac, and pastes the selected item back into the app you were using. The full history window never needs to stay open.
 
 ![Clippy quick clipboard picker](Docs/Images/quick-panel.jpg)
 
-## Highlights
+## Contents
 
-- Native Swift 6, SwiftUI, AppKit and SwiftData application
-- Text, rich text, links, files, images and hexadecimal colors
-- Keyboard-first picker: search, filters, arrows, Return, Escape and `⌘1`…`⌘9`
-- Automatic focus restoration and paste into the previously active app
-- Full history with sorting, multi-selection, pinning and batch deletion
-- Configurable retention, deduplication and ignored content types
-- App exclusions and custom sensitive-content patterns
+- [Install](#install)
+- [Use Clippy](#use-clippy)
+- [Keyboard shortcuts](#keyboard-shortcuts)
+- [Features](#features)
+- [Permissions and troubleshooting](#permissions-and-troubleshooting)
+- [Privacy](#privacy)
+- [Languages](#languages)
+- [Development](#development)
+- [Release](#release)
+- [License](#license)
+
+## Install
+
+### Homebrew — recommended
+
+```sh
+brew install --cask EvanPluchart/tap/clippy
+```
+
+Then open Clippy from Applications or with:
+
+```sh
+open -a Clippy
+```
+
+Update or uninstall it with:
+
+```sh
+brew upgrade --cask clippy
+brew uninstall --cask clippy
+```
+
+> The Cask becomes available with the first Developer ID signed and notarized public release. If Homebrew reports that the Cask does not exist yet, use the source build below in the meantime.
+
+### Build from source
+
+Requirements: macOS 14 Sonoma or later and Xcode 16 or later.
+
+```sh
+git clone https://github.com/EvanPluchart/Clippy.git
+cd Clippy
+./scripts/build_local.sh
+ditto dist/local/Clippy.app /Applications/Clippy.app
+open /Applications/Clippy.app
+```
+
+The script creates a universal Apple silicon and Intel app at `dist/local/Clippy.app`. It is ad-hoc signed for local development; public releases are Developer ID signed and notarized.
+
+## Use Clippy
+
+1. Open Clippy and complete the short introduction.
+2. Copy text, an image, a link, or a file.
+3. Press `⌘⇧V`.
+4. Move with `↑` and `↓`, then press Return to paste.
+5. Allow Accessibility access when macOS asks. It is used only for automatic paste into the previously active app.
+
+Clippy can run menu-bar-only without a Dock icon. Opening it again from Finder or Applications brings up the full history.
+
+## Keyboard shortcuts
+
+| Action | Shortcut |
+| --- | --- |
+| Open the quick panel | `⌘⇧V` |
+| Move the selection | `↑` / `↓` |
+| Paste the selected item | `Return` |
+| Paste result 1–9 | `⌘1`…`⌘9` |
+| Close the quick panel | `Escape` |
+| Open settings | `⌘,` |
+
+The global shortcut can be changed under **Settings → Shortcut**.
+
+## Features
+
+- Native Swift 6, SwiftUI, AppKit, and SwiftData app
+- Text, rich text, links, files, images, and hexadecimal colors
+- Search, type filters, keyboard navigation, and `⌘1`…`⌘9`
+- Focus restoration and automatic paste into the previous app
+- Full history with sorting, pagination, multi-selection, pinning, and batch deletion
+- Configurable retention, storage limits, deduplication, and ignored content types
+- Application exclusions and custom sensitive-content patterns
 - Optional launch at login
-- Light, dark and system appearance
-- Local-only processing: no account, sync, analytics, telemetry or network client
+- System, light, and dark appearance
+- English and French interface, selected automatically from macOS
+- No account, cloud sync, analytics, telemetry, or network client
 - Universal binary for Apple silicon and Intel Macs
 
 ![Clippy history window](Docs/Images/history.jpg)
 
 ![Clippy settings in dark mode](Docs/Images/settings-dark.jpg)
 
-## Install
+## Permissions and troubleshooting
 
-### Homebrew and direct download
-
-The public Cask and downloadable app will be published with the first Developer ID signed and notarized release. Until then, build Clippy locally from source.
-
-### Build locally
-
-```sh
-git clone https://github.com/EvanPluchart/Clippy.git
-cd Clippy
-./scripts/build_local.sh
-```
-
-The universal, ad-hoc signed app is written to `dist/local/Clippy.app`. This local build is intended for development; public downloads are Developer ID signed and notarized.
-
-## First run
-
-![Clippy onboarding](Docs/Images/onboarding.jpg)
-
-1. Open Clippy. The onboarding screen explains the shortcut and privacy model.
-2. Enable **Launch Clippy at login** if you want `⌘⇧V` available after every restart.
-3. Copy text, an image, a URL or a file.
-4. Press `⌘⇧V`, choose an item with the arrows, then press Return.
-5. Grant Accessibility permission when macOS asks. Clippy needs it only to synthesize `⌘V` in the app that was active before the picker.
-
-The history window never needs to remain open. Clippy can run menu-bar-only with no Dock icon.
-If Clippy is already running, opening it again from Finder or Applications brings the history window forward.
-
-## Permissions
+### Why Accessibility permission is needed
 
 Reading and writing the pasteboard does not require a macOS permission prompt. The global shortcut uses the public Carbon hot-key API and does not monitor general keystrokes.
 
-Automatic paste requires **System Settings → Privacy & Security → Accessibility**. Clippy first writes the chosen item to the pasteboard, restores the previous app, and only then sends Command-V.
+Automatic paste requires **System Settings → Privacy & Security → Accessibility**. Clippy writes the selected item to the pasteboard, restores the previous app, and only then sends `⌘V`.
 
-Clippy’s Developer ID build intentionally does not use App Sandbox because macOS Accessibility clients are incompatible with it. Hardened Runtime remains enabled, there are no network entitlements or networking dependencies, and all clipboard processing stays local.
+Clippy’s Developer ID build intentionally does not use App Sandbox because the user-authorized Accessibility workflow is incompatible with it. Hardened Runtime remains enabled, and the app has no network entitlement or networking dependency.
 
-If automatic paste does not work after permission was granted:
+### Automatic paste does not work
 
 1. Quit every running copy of Clippy.
 2. Make sure the app is installed at `/Applications/Clippy.app`.
-3. In Accessibility settings, turn Clippy off and back on. Remove and re-add it if macOS still references an older build.
-4. Reopen Clippy and confirm **Settings → General → Collage automatique** is enabled.
+3. Open **System Settings → Privacy & Security → Accessibility**.
+4. Turn Clippy off and back on. If macOS still references an older build, remove Clippy from the list and add `/Applications/Clippy.app` again.
+5. Reopen Clippy and check **Settings → General → Automatic Paste**.
+
+Even without Accessibility permission, selecting an item still copies it to the pasteboard so you can paste manually.
+
+### `⌘⇧V` does not open the panel
+
+- Open **Settings → Shortcut** and confirm that the shortcut is active.
+- Another app may already use the same shortcut; choose a different combination and click **Apply**.
+- Enable **Launch Clippy at Login** if you want the shortcut available after every restart.
 
 ## Privacy
 
-Clipboard history is stored under:
+Clipboard history is stored locally under:
 
 ```text
 ~/Library/Application Support/Clippy/
@@ -97,32 +160,15 @@ Clipboard history is stored under:
 
 Preferences are stored in `~/Library/Preferences/com.evpl.clippy.plist`.
 
-On first launch, Clippy safely imports compatible history and preferences from the container used by earlier sandboxed builds. The migration is idempotent and leaves the legacy data untouched.
+Clippy never sends clipboard data anywhere. It has no telemetry, crash-reporting SDK, remote configuration, updater, or network client. Privacy settings can pause monitoring, exclude applications, ignore content types, reject custom regular-expression patterns, and erase all local history.
 
-Clippy never sends clipboard data anywhere. It does not include telemetry, crash-reporting SDKs, remote configuration or an updater. The privacy controls can:
+On first launch, Clippy safely imports compatible history and preferences from earlier sandboxed builds. Migration is idempotent and leaves the legacy data untouched.
 
-- pause monitoring immediately;
-- exclude applications by bundle identifier;
-- ignore selected clipboard types;
-- ignore transient or confidential pasteboard markers;
-- ignore short entries from known password managers;
-- reject entries matching custom regular expressions;
-- erase the complete local history.
+Sensitive-content detection is defensive, not a security boundary. Review the privacy settings before using any clipboard manager with confidential material.
 
-Sensitive-content detection is defensive, not a security boundary. Any clipboard manager can contain private data, so review the privacy settings before using Clippy with confidential material.
+## Languages
 
-## Keyboard controls
-
-| Action | Shortcut |
-| --- | --- |
-| Open quick picker | `⌘⇧V` |
-| Move selection | `↑` / `↓` |
-| Paste selected item | `Return` |
-| Choose result 1–9 | `⌘1`…`⌘9` |
-| Close picker | `Escape` |
-| Open settings | `⌘,` |
-
-The global picker shortcut is configurable under **Settings → Shortcut**.
+Clippy 1.2 is available in English and French. The app automatically follows the preferred language configured in macOS and falls back to French when no supported language is selected.
 
 ## Development
 
@@ -132,38 +178,44 @@ Requirements:
 - Xcode 16 or later
 - Swift 6
 
-Open `Clippy.xcodeproj` and run the shared **Clippy** scheme, or use:
+Open `Clippy.xcodeproj` and run the shared **Clippy** scheme, or run:
 
 ```sh
 swift test -Xswiftc -strict-concurrency=complete -Xswiftc -warnings-as-errors
 ```
 
-The project has no third-party runtime dependency. After adding or removing a Swift source file, regenerate the checked-in Xcode project:
+The project has no third-party runtime dependency. After adding or removing a Swift source or resource file, regenerate the checked-in Xcode project:
 
 ```sh
 ruby scripts/generate_xcodeproj.rb
 ```
 
+Validate the translation catalog and its format placeholders with:
+
+```sh
+ruby scripts/validate_localizations.rb
+```
+
+CI also compares the catalog with the localization keys emitted by the Swift compiler.
+
 ### Architecture
 
 ```text
 Clippy/
-├── App/             lifecycle, shared state and AppKit window controllers
+├── App/             lifecycle, shared state, and AppKit window controllers
 ├── Models/          SwiftData model and Codable settings
 ├── Repositories/    transactional history access
-├── Services/        monitoring, parsing, paste, storage and cleanup
-├── Utilities/       normalization, hashing, privacy filters and logging
-├── Views/           quick picker, history, settings, onboarding and menu
-└── Resources/       icon assets, entitlements and privacy manifest
+├── Services/        monitoring, parsing, paste, storage, and cleanup
+├── Utilities/       normalization, hashing, privacy filters, and localization
+├── Views/           quick panel, history, settings, onboarding, and menu bar
+└── Resources/       icon assets, translations, entitlements, and privacy manifest
 ```
 
 Original images are stored as normalized PNG files. Small JPEG thumbnails and a bounded decoded-image cache keep list scrolling responsive. Stored paths are relative and validated before access.
 
 ## Release
 
-`scripts/release.sh` performs the strict tests, creates a universal archive, signs it with Developer ID, validates entitlements, submits it for notarization, staples the ticket, produces the release ZIP and SHA-256, and generates the Homebrew cask.
-
-Required environment variables:
+`scripts/release.sh` runs strict tests, creates a universal archive, signs it with Developer ID, validates entitlements, submits it for notarization, staples the ticket, produces the release ZIP and SHA-256, and generates the Homebrew Cask.
 
 ```sh
 SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" \
@@ -172,7 +224,7 @@ DEVELOPMENT_TEAM="TEAMID" \
 ./scripts/release.sh
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development guidelines and [SECURITY.md](SECURITY.md) for responsible disclosure.
+See [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request and [SECURITY.md](SECURITY.md) for responsible disclosure.
 
 ## License
 

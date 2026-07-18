@@ -6,6 +6,7 @@
 - [x] Verify keyboard navigation, click selection and real paste into another app.
 - [x] Verify automatic paste with Accessibility both denied and authorized.
 - [x] Verify light, dark and system appearance.
+- [x] Verify onboarding, quick picker, history, settings and menu-bar layouts in French and English.
 - [x] Verify the menu-bar/Dock visibility invariant.
 - [ ] Test launch at login on an installed, signed build.
 
@@ -17,6 +18,7 @@
 - [x] Confirm QA environment hooks are absent from the Release binary.
 - [x] Confirm the app embeds no unexpected executable or framework.
 - [x] Update version, build number and changelog.
+- [x] Validate that every extracted French source string has an English translation.
 
 ## Distribution
 

@@ -93,7 +93,7 @@ struct QuickPanelView: View {
                         .frame(width: 24, height: 24)
                 }
                 .buttonStyle(.borderless)
-                .help("Vider l’historique")
+                .help(String(localized: "Vider l’historique"))
                 .disabled(state.repository.items.allSatisfy(\.isPinned))
                 Button {
                     state.hideQuickPanel()
@@ -102,7 +102,7 @@ struct QuickPanelView: View {
                         .frame(width: 24, height: 24)
                 }
                 .buttonStyle(.borderless)
-                .help("Fermer")
+                .help(String(localized: "Fermer"))
             }
             .padding(12)
             .background(.bar)
@@ -113,12 +113,14 @@ struct QuickPanelView: View {
     private var content: some View {
         if visible.isEmpty {
             ContentUnavailableView(
-                model.query.isEmpty ? "Aucun élément" : "Aucun résultat",
+                model.query.isEmpty
+                    ? String(localized: "Aucun élément")
+                    : String(localized: "Aucun résultat"),
                 systemImage: model.query.isEmpty ? "clipboard" : "magnifyingglass",
                 description: Text(
                     model.query.isEmpty
-                        ? "Copiez du texte, une image, un lien ou un fichier."
-                        : "Essayez une autre recherche ou un autre filtre."
+                        ? String(localized: "Copiez du texte, une image, un lien ou un fichier.")
+                        : String(localized: "Essayez une autre recherche ou un autre filtre.")
                 )
             )
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -165,8 +167,16 @@ struct QuickPanelView: View {
                         .frame(width: 28, height: 28)
                 }
                 .buttonStyle(.borderless)
-                .help(item.isPinned ? "Désépingler" : "Épingler")
-                .accessibilityLabel(item.isPinned ? "Désépingler" : "Épingler")
+                .help(
+                    item.isPinned
+                        ? String(localized: "Désépingler")
+                        : String(localized: "Épingler")
+                )
+                .accessibilityLabel(
+                    item.isPinned
+                        ? String(localized: "Désépingler")
+                        : String(localized: "Épingler")
+                )
 
                 Button(role: .destructive) {
                     state.delete([item])
@@ -175,8 +185,8 @@ struct QuickPanelView: View {
                         .frame(width: 28, height: 28)
                 }
                 .buttonStyle(.borderless)
-                .help("Supprimer")
-                .accessibilityLabel("Supprimer")
+                .help(String(localized: "Supprimer"))
+                .accessibilityLabel(String(localized: "Supprimer"))
             }
             .padding(.trailing, 8)
         }
@@ -223,7 +233,7 @@ struct QuickPanelView: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
             Spacer()
-            Text("\(visible.count) élément\(visible.count > 1 ? "s" : "")")
+            Text(L10n.itemCount(visible.count))
                 .font(.caption)
                 .foregroundStyle(.tertiary)
         }

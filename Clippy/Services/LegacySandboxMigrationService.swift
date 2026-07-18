@@ -65,7 +65,9 @@ enum LegacySandboxMigrationService {
             Log.storage.error(
                 "Legacy preference migration failed: \(error.localizedDescription, privacy: .public)"
             )
-            return "Les anciens réglages n’ont pas pu être récupérés automatiquement."
+            return String(
+                localized: "Les anciens réglages n’ont pas pu être récupérés automatiquement."
+            )
         }
     }
 
@@ -162,7 +164,7 @@ enum LegacySandboxMigrationService {
                 "Legacy sandbox migration imported \(migratedCount, privacy: .public) item(s)"
             )
             let warning = missingImageCount > 0
-                ? "\(missingImageCount) ancienne(s) image(s) n’ont pas pu être récupérées."
+                ? L10n.missingLegacyImageCount(missingImageCount)
                 : nil
             return LegacySandboxMigrationResult(
                 migratedItemCount: migratedCount,
@@ -173,7 +175,9 @@ enum LegacySandboxMigrationService {
                 "Legacy history migration failed: \(error.localizedDescription, privacy: .public)"
             )
             return LegacySandboxMigrationResult(
-                warning: "L’ancien historique sandboxé n’a pas pu être récupéré automatiquement."
+                warning: String(
+                    localized: "L’ancien historique sandboxé n’a pas pu être récupéré automatiquement."
+                )
             )
         }
     }

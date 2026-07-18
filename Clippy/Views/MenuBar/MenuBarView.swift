@@ -5,9 +5,10 @@ struct MenuBarView: View {
 
     var body: some View {
         Text(
-            state.monitor.isRunning
-                ? "\(state.repository.items.count) élément(s) · Surveillance active"
-                : "\(state.repository.items.count) élément(s) · Surveillance en pause"
+            L10n.monitoringSummary(
+                itemCount: state.repository.items.count,
+                isRunning: state.monitor.isRunning
+            )
         )
         .font(.caption)
         .foregroundStyle(.secondary)
@@ -20,7 +21,11 @@ struct MenuBarView: View {
 
         Divider()
 
-        Button("Afficher le panneau rapide  \(state.settingsStore.value.shortcut.display)") {
+        Button(
+            String(
+                localized: "Afficher le panneau rapide  \(state.settingsStore.value.shortcut.display)"
+            )
+        ) {
             state.showQuickPanel()
         }
         Button("Ouvrir l’historique") {

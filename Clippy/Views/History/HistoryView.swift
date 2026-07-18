@@ -68,12 +68,14 @@ struct HistoryView: View {
 
                 if visible.isEmpty {
                     ContentUnavailableView(
-                        model.query.isEmpty ? "Historique vide" : "Aucun résultat",
+                        model.query.isEmpty
+                            ? String(localized: "Historique vide")
+                            : String(localized: "Aucun résultat"),
                         systemImage: model.query.isEmpty ? "clipboard" : "magnifyingglass",
                         description: Text(
                             model.query.isEmpty
-                                ? "Les prochains éléments copiés apparaîtront ici."
-                                : "Essayez une autre recherche ou un autre filtre."
+                                ? String(localized: "Les prochains éléments copiés apparaîtront ici.")
+                                : String(localized: "Essayez une autre recherche ou un autre filtre.")
                         )
                     )
                 } else {
@@ -87,7 +89,9 @@ struct HistoryView: View {
                         setSelectionPinned(!selectionIsFullyPinned)
                     } label: {
                         Label(
-                            selectionIsFullyPinned ? "Désépingler" : "Épingler",
+                            selectionIsFullyPinned
+                                ? String(localized: "Désépingler")
+                                : String(localized: "Épingler"),
                             systemImage: selectionIsFullyPinned ? "pin.slash" : "pin"
                         )
                     }
@@ -171,10 +175,10 @@ struct HistoryView: View {
         }
         .safeAreaInset(edge: .bottom) {
             HStack {
-                Text("\(filtered.count) résultat\(filtered.count > 1 ? "s" : "")")
+                Text(L10n.resultCount(filtered.count))
                 Spacer()
                 if !model.selection.isEmpty {
-                    Text("\(model.selection.count) sélectionné\(model.selection.count > 1 ? "s" : "")")
+                    Text(L10n.selectionCount(model.selection.count))
                 }
             }
             .font(.caption)

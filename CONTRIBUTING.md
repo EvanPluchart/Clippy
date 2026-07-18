@@ -22,6 +22,12 @@ The Xcode project is generated without third-party tooling. After adding or remo
 ruby scripts/generate_xcodeproj.rb
 ```
 
+French is the source language and every user-facing string must include an English translation in `Clippy/Resources/Localizable.xcstrings`. Validate the catalog structure and placeholders with:
+
+```sh
+ruby scripts/validate_localizations.rb
+```
+
 ## Pull requests
 
 - Keep changes focused and explain their user-facing impact.
@@ -30,6 +36,7 @@ ruby scripts/generate_xcodeproj.rb
 - Never log clipboard payloads.
 - Run the strict Swift tests and Xcode analyzer before opening a pull request.
 - Include screenshots for visible UI changes.
+- Update both `README.md` and `README.fr.md` when documentation changes affect users.
 
 ## Architecture
 
