@@ -1,0 +1,23 @@
+cask "clippy" do
+  version "__VERSION__"
+  sha256 "__SHA256__"
+
+  url "https://github.com/EvanPluchart/Clippy/releases/download/v#{version}/Clippy-#{version}.zip"
+  name "Clippy"
+  desc "Fast, private, native clipboard history for macOS"
+  homepage "https://github.com/EvanPluchart/Clippy"
+
+  depends_on macos: ">= :sonoma"
+
+  app "Clippy.app"
+
+  uninstall quit: "com.evpl.clippy"
+
+  zap trash: [
+    "~/Library/Application Support/Clippy",
+    "~/Library/Caches/com.evpl.clippy",
+    "~/Library/Containers/com.evpl.clippy",
+    "~/Library/Preferences/com.evpl.clippy.plist",
+    "~/Library/Saved Application State/com.evpl.clippy.savedState",
+  ]
+end
