@@ -56,9 +56,10 @@ jobs:
 
       - name: Validate distribution tooling
         run: |
-          bash -n scripts/create_dmg.sh scripts/release.sh scripts/verify_dmg.sh
+          bash -n scripts/create_dmg.sh scripts/release.sh scripts/release_unsigned.sh scripts/verify_dmg.sh
           osacompile -o /tmp/clippy-configure-dmg.scpt scripts/configure_dmg.applescript
           ruby -c Packaging/Casks/clippy.rb.template
+          ruby -c Packaging/Casks/clippy-unsigned.rb.template
           swift scripts/render_dmg_background.swift \
             Packaging/DMG/background-source.png \
             /tmp/clippy-dmg-background

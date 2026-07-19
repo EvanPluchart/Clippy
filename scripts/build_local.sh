@@ -40,5 +40,7 @@ echo
 echo "Local build ready:"
 echo "  $OUTPUT_APP"
 echo
-echo "This build is ad-hoc signed for local testing only."
-echo "A public release must be Developer ID signed and notarized with scripts/release.sh."
+echo "This build is ad-hoc signed and is not notarized by Apple."
+echo "It can be used locally or as input to the unsigned release pipeline."
+echo "Use scripts/release_unsigned.sh for the current free distribution."
+echo "Use scripts/release.sh when Developer ID signing and notarization are available."

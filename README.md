@@ -48,11 +48,17 @@ Clippy adds a native `⌘⇧V` clipboard picker to macOS. It stays quietly in th
 
 ### Direct download — easiest
 
-Download the latest signed and notarized DMG from [clippy.evanpluchart.fr](https://clippy.evanpluchart.fr), open it, then drag Clippy into Applications.
+Download the official DMG from [clippy.evanpluchart.fr](https://clippy.evanpluchart.fr), open it, then drag Clippy into Applications.
 
 ![Clippy drag-to-Applications installer](Docs/Images/installer.jpg)
 
-If the website still shows “Download coming soon”, the signed release has not been published yet. Source builds remain available below.
+Clippy is free and currently distributed without an Apple Developer ID signature or notarization. Gatekeeper may therefore block the first launch:
+
+1. Try to open Clippy once from Applications.
+2. Open **System Settings → Privacy & Security**.
+3. Scroll to **Security**, click **Open Anyway**, then confirm **Open**.
+
+Only download Clippy from the official website or [GitHub releases](https://github.com/EvanPluchart/Clippy/releases), and verify the published SHA-256 checksum if you want to confirm the download. See [Apple’s Gatekeeper instructions](https://support.apple.com/102445) for more detail.
 
 ### Homebrew — recommended for Terminal users
 
@@ -73,7 +79,7 @@ brew upgrade --cask clippy
 brew uninstall --cask clippy
 ```
 
-> The Cask becomes available with the first Developer ID signed and notarized public release. If Homebrew reports that the Cask does not exist yet, use the source build below in the meantime.
+The Cask installs the same official DMG. The one-time Gatekeeper confirmation described above may still be required.
 
 ### Build from source
 
@@ -87,7 +93,7 @@ ditto dist/local/Clippy.app /Applications/Clippy.app
 open /Applications/Clippy.app
 ```
 
-The script creates a universal Apple silicon and Intel app at `dist/local/Clippy.app`. It is ad-hoc signed for local development; public releases are Developer ID signed and notarized.
+The script creates a universal Apple silicon and Intel app at `dist/local/Clippy.app`. It is ad-hoc signed and is not notarized by Apple.
 
 ## Use Clippy
 
@@ -139,7 +145,7 @@ Reading and writing the pasteboard does not require a macOS permission prompt. T
 
 Automatic paste requires **System Settings → Privacy & Security → Accessibility**. Clippy writes the selected item to the pasteboard, restores the previous app, and only then sends `⌘V`.
 
-Clippy’s Developer ID build intentionally does not use App Sandbox because the user-authorized Accessibility workflow is incompatible with it. Hardened Runtime remains enabled, and the app has no network entitlement or networking dependency.
+Clippy intentionally does not use App Sandbox because the user-authorized Accessibility workflow is incompatible with it. Hardened Runtime remains enabled, and the app has no network entitlement or networking dependency.
 
 ### Automatic paste does not work
 
@@ -225,7 +231,15 @@ Original images are stored as normalized PNG files. Small JPEG thumbnails and a 
 
 ## Release
 
-`scripts/release.sh` runs strict tests, creates a universal archive, signs it with Developer ID, validates entitlements, notarizes and staples both the app and DMG, verifies Gatekeeper, produces the DMG and SHA-256, and generates the Homebrew Cask.
+The current free release path is deliberately explicit about its trust model:
+
+```sh
+./scripts/release_unsigned.sh
+```
+
+It requires a clean Git tree, runs strict tests, creates and validates a universal ad-hoc-signed app, verifies Hardened Runtime and entitlements, builds the DMG, archives its dSYM, writes a SHA-256 checksum, and generates the matching Homebrew Cask. It does not apply a Developer ID signature or submit anything to Apple.
+
+The optional future signed path remains available in `scripts/release.sh`. It requires an Apple Developer ID certificate and notarization profile:
 
 ```sh
 SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" \

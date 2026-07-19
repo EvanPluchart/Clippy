@@ -4,19 +4,26 @@ All notable changes to Clippy are documented here.
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-07-19
+
 ### Added
 
 - Official bilingual website at [clippy.evanpluchart.fr](https://clippy.evanpluchart.fr).
 - Direct-install DMG packaging with an Applications shortcut.
 - Polished language-neutral DMG experience with Retina artwork, fixed icon
   placement, a drag target, and a custom volume icon.
-- Developer ID signing, app and DMG notarization, stapling, Gatekeeper
-  assessment, and SHA-256 validation in the release pipeline.
+- Reproducible free release pipeline with an ad-hoc app signature, Hardened
+  Runtime and entitlement validation, dSYM archive, SHA-256 checksum, and
+  explicit verification that no Developer ID signature is present.
+- Optional Developer ID signing, app and DMG notarization, stapling, and
+  Gatekeeper assessment pipeline for a future signed distribution.
 
 ### Changed
 
-- Updated the Homebrew Cask to install the notarized DMG and use the official
-  website as its homepage.
+- Updated the Homebrew Cask to install the official DMG, explain the one-time
+  Gatekeeper confirmation, and use the official website as its homepage.
+- Documented that the current free distribution is not Developer ID signed or
+  notarized, with official first-launch instructions and checksum verification.
 - Protected `main` behind required pull requests and a passing strict macOS CI check.
 
 ## [1.2.0] - 2026-07-18
@@ -55,5 +62,6 @@ All notable changes to Clippy are documented here.
 - Existing history and preferences not following users when upgrading from the earlier sandboxed build.
 - Reopening the menu-bar-only app from Finder or Applications not presenting the history window.
 
-[Unreleased]: https://github.com/EvanPluchart/Clippy/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/EvanPluchart/Clippy/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/EvanPluchart/Clippy/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/EvanPluchart/Clippy/releases/tag/v1.2.0
