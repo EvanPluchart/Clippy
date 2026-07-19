@@ -31,7 +31,8 @@ macOS has no built-in equivalent to the Windows clipboard history. Existing tool
 - Transactional file storage and safe relative-path resolution
 - Normalized image fingerprints and optimized thumbnails
 - Idempotent migration from the earlier sandboxed data container
-- Hardened Runtime, privacy manifest, Developer ID/notarization pipeline
+- Hardened Runtime, privacy manifest, reproducible DMG/checksum pipeline, and
+  an optional Developer ID/notarization path
 - Universal Apple silicon and Intel build
 
 ### Quality

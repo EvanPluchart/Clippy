@@ -8,7 +8,7 @@
 - [x] Verify light, dark and system appearance.
 - [x] Verify onboarding, quick picker, history, settings and menu-bar layouts in French and English.
 - [x] Verify the menu-bar/Dock visibility invariant.
-- [ ] Test launch at login on an installed, signed build.
+- [ ] Test launch at login on an installed distribution build.
 
 ## Engineering
 
@@ -22,14 +22,17 @@
 
 ## Distribution
 
-- [ ] Sign with a Developer ID Application certificate.
-- [ ] Notarize and staple the app.
-- [ ] Verify Gatekeeper assessment on a clean macOS account or Mac.
+- [x] Record the owner-approved v1.3 exception: no paid Apple Developer
+      membership, Developer ID signature, or notarization.
+- [x] Build with an ad-hoc signature and verify that no signing authority is present.
+- [x] Confirm the expected Gatekeeper rejection on a quarantined copy and
+      document Apple’s **Open Anyway** flow.
 - [ ] Publish the DMG, SHA-256 and dSYM.
-- [ ] Verify the Retina DMG layout, drag-to-Applications flow and first launch
-      from a downloaded copy.
+- [x] Verify the Retina DMG layout and drag-to-Applications flow.
 - [ ] Publish the generated Cask to `EvanPluchart/homebrew-tap`.
 - [ ] Test `brew install --cask EvanPluchart/tap/clippy`.
+- [ ] Future paid release: sign with Developer ID, notarize, staple, and pass
+      Gatekeeper assessment.
 
 ## Publication
 
@@ -38,5 +41,5 @@
 - [x] Enable GitHub Private Vulnerability Reporting.
 - [x] Create the source-only `v1.2.0` GitHub release from `CHANGELOG.md`.
 - [x] Publish the bilingual website at `clippy.evanpluchart.fr`.
-- [ ] Create and publish the signed `v1.3.0` GitHub release.
+- [ ] Create and publish the explicitly unsigned `v1.3.0` GitHub release.
 - [ ] Add the repository and Homebrew links to the portfolio.
