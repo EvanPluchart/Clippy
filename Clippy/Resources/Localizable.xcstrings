@@ -451,16 +451,6 @@
         }
       }
     },
-    "Autoriser" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Allow"
-          }
-        }
-      }
-    },
     "Autorisez Clippy dans Réglages Système > Général > Ouverture." : {
       "localizations" : {
         "en" : {
@@ -797,16 +787,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Created by Evan Pluchart · © 2026"
-          }
-        }
-      }
-    },
-    "Demander l’autorisation" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Request Permission"
           }
         }
       }
