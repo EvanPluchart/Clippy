@@ -4,6 +4,21 @@ All notable changes to Clippy are documented here.
 
 ## [Unreleased]
 
+### Added
+
+- Official bilingual website at [clippy.evanpluchart.fr](https://clippy.evanpluchart.fr).
+- Direct-install DMG packaging with an Applications shortcut.
+- Polished language-neutral DMG experience with Retina artwork, fixed icon
+  placement, a drag target, and a custom volume icon.
+- Developer ID signing, app and DMG notarization, stapling, Gatekeeper
+  assessment, and SHA-256 validation in the release pipeline.
+
+### Changed
+
+- Updated the Homebrew Cask to install the notarized DMG and use the official
+  website as its homepage.
+- Protected `main` behind required pull requests and a passing strict macOS CI check.
+
 ## [1.2.0] - 2026-07-18
 
 ### Added

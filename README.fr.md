@@ -9,6 +9,8 @@
 </p>
 
 <p align="center">
+  <a href="https://clippy.evanpluchart.fr">Site web</a>
+  ·
   <a href="README.md">English</a>
   ·
   <a href="CHANGELOG.md">Changelog</a>
@@ -44,7 +46,15 @@ Clippy apporte à macOS un sélecteur de presse-papiers natif avec `⌘⇧V`. L�
 
 ## Installation
 
-### Homebrew — recommandé
+### Téléchargement direct — le plus simple
+
+Téléchargez le dernier DMG signé et notarié depuis [clippy.evanpluchart.fr](https://clippy.evanpluchart.fr), ouvrez-le, puis glissez Clippy dans Applications.
+
+![Installation de Clippy par glisser-déposer](Docs/Images/installer.jpg)
+
+Si le site affiche encore « Téléchargement bientôt disponible », la release signée n’a pas encore été publiée. La compilation depuis les sources reste disponible ci-dessous.
+
+### Homebrew — recommandé pour les utilisateurs du Terminal
 
 ```sh
 brew install --cask EvanPluchart/tap/clippy
@@ -168,7 +178,7 @@ La détection de contenu sensible est défensive, pas infaillible. Vérifiez les
 
 ## Langues
 
-Clippy 1.2 est disponible en français et en anglais. L’app suit automatiquement la langue préférée configurée dans macOS et utilise le français si aucune langue prise en charge n’est sélectionnée.
+Clippy 1.3 est disponible en français et en anglais. L’app suit automatiquement la langue préférée configurée dans macOS et utilise le français si aucune langue prise en charge n’est sélectionnée.
 
 ## Développement
 
@@ -215,7 +225,7 @@ Les images originales sont stockées sous forme de PNG normalisés. De petites m
 
 ## Release
 
-`scripts/release.sh` exécute les tests stricts, crée une archive universelle, la signe avec Developer ID, valide les entitlements, l’envoie à la notarisation, agrafe le ticket, produit le ZIP et son SHA-256, puis génère le Cask Homebrew.
+`scripts/release.sh` exécute les tests stricts, crée une archive universelle, la signe avec Developer ID, valide les entitlements, notarie et agrafe l’app puis le DMG, vérifie Gatekeeper, produit le DMG et son SHA-256, puis génère le Cask Homebrew.
 
 ```sh
 SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" \

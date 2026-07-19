@@ -2,12 +2,17 @@ cask "clippy" do
   version "__VERSION__"
   sha256 "__SHA256__"
 
-  url "https://github.com/EvanPluchart/Clippy/releases/download/v#{version}/Clippy-#{version}.zip"
+  url "https://github.com/EvanPluchart/Clippy/releases/download/v#{version}/Clippy-#{version}.dmg"
   name "Clippy"
-  desc "Fast, private, native clipboard history for macOS"
-  homepage "https://github.com/EvanPluchart/Clippy"
+  desc "Fast, private, native clipboard history"
+  homepage "https://clippy.evanpluchart.fr/"
 
-  depends_on macos: ">= :sonoma"
+  livecheck do
+    url :url
+    strategy :github_latest
+  end
+
+  depends_on macos: :sonoma
 
   app "Clippy.app"
 

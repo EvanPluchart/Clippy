@@ -53,3 +53,14 @@ jobs:
 
       - name: Validate French and English localizations
         run: ruby scripts/validate_localizations.rb dist/DerivedData-CI/Build/Intermediates.noindex
+
+      - name: Validate distribution tooling
+        run: |
+          bash -n scripts/create_dmg.sh scripts/release.sh scripts/verify_dmg.sh
+          osacompile -o /tmp/clippy-configure-dmg.scpt scripts/configure_dmg.applescript
+          ruby -c Packaging/Casks/clippy.rb.template
+          swift scripts/render_dmg_background.swift \
+            Packaging/DMG/background-source.png \
+            /tmp/clippy-dmg-background
+          cmp Packaging/DMG/background.png /tmp/clippy-dmg-background/background.png
+          cmp Packaging/DMG/background@2x.png /tmp/clippy-dmg-background/background@2x.png
