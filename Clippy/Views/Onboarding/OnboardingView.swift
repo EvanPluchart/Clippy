@@ -37,8 +37,12 @@ struct OnboardingView: View {
                     Text(
                         launchError
                             ?? (loginStatus == .requiresApproval
-                                ? "macOS attend votre approbation dans les éléments d’ouverture."
-                                : "Recommandé pour garder le raccourci disponible en permanence.")
+                                ? String(
+                                    localized: "macOS attend votre approbation dans les éléments d’ouverture."
+                                )
+                                : String(
+                                    localized: "Recommandé pour garder le raccourci disponible en permanence."
+                                ))
                     )
                     .font(.caption)
                     .foregroundStyle(launchError == nil ? Color.secondary : Color.red)
@@ -81,17 +85,17 @@ struct OnboardingView: View {
             feature(
                 symbol: "command",
                 title: state.settingsStore.value.shortcut.display,
-                detail: "Ouvre le panneau rapide partout sur macOS."
+                detail: String(localized: "Ouvre le panneau rapide partout sur macOS.")
             )
             feature(
                 symbol: "arrow.up.arrow.down",
-                title: "Tout au clavier",
-                detail: "Flèches, Entrée, Échap et ⌘1 à ⌘9."
+                title: String(localized: "Tout au clavier"),
+                detail: String(localized: "Flèches, Entrée, Échap et ⌘1 à ⌘9.")
             )
             feature(
                 symbol: "lock.shield",
-                title: "100 % local",
-                detail: "Aucune donnée, télémétrie ou requête réseau."
+                title: String(localized: "100 % local"),
+                detail: String(localized: "Aucune donnée, télémétrie ou requête réseau.")
             )
         }
     }
@@ -127,8 +131,8 @@ struct OnboardingView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(
                     state.automaticPaste.isAuthorized
-                        ? "Collage automatique autorisé"
-                        : "Autorisez le collage automatique"
+                        ? String(localized: "Collage automatique autorisé")
+                        : String(localized: "Autorisez le collage automatique")
                 )
                 .font(.headline)
                 Text("Clippy utilise l’autorisation Accessibilité uniquement pour envoyer ⌘V à l’app précédente.")
@@ -181,7 +185,7 @@ struct OnboardingView: View {
             launchError = nil
         } catch {
             loginStatus = LaunchAtLoginService.status
-            launchError = "macOS n’a pas pu modifier ce réglage."
+            launchError = String(localized: "macOS n’a pas pu modifier ce réglage.")
         }
     }
 }

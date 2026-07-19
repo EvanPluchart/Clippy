@@ -33,7 +33,7 @@ struct ClipboardItemRow: View {
                     .font(.caption2)
                     .foregroundStyle(.tertiary)
                 }
-                Text(item.preview.isEmpty ? "Sans aperçu" : item.preview)
+                Text(item.preview.isEmpty ? String(localized: "Sans aperçu") : item.preview)
                     .font(compact ? .callout : .body)
                     .lineLimit(compact ? 2 : 3)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -60,7 +60,11 @@ struct ClipboardItemRow: View {
             if item.content != nil {
                 Button("Copier en texte brut") { state.copy(item, plainTextOnly: true) }
             }
-            Button(item.isPinned ? "Désépingler" : "Épingler") { state.repository.togglePinned(item) }
+            Button(
+                item.isPinned ? String(localized: "Désépingler") : String(localized: "Épingler")
+            ) {
+                state.repository.togglePinned(item)
+            }
             Divider()
             if item.type == .image, let path = item.relativeFilePath {
                 Button("Afficher en grand") {
@@ -122,7 +126,11 @@ struct ClipboardItemRow: View {
         case .image:
             let dimensions = item.imageWidth.flatMap { w in item.imageHeight.map { "\(w) × \($0) · " } } ?? ""
             return dimensions + item.estimatedSize.formattedBytes
-        case .plainText, .richText: return "\(item.content?.count ?? 0) caractères · utilisé \(item.useCount) fois"
+        case .plainText, .richText:
+            return L10n.textUsage(
+                characterCount: item.content?.count ?? 0,
+                useCount: item.useCount
+            )
         default: return item.estimatedSize.formattedBytes
         }
     }
@@ -172,7 +180,12 @@ struct TypeFilterBar: View {
 
     private func buttons(showTitles: Bool) -> some View {
         HStack(spacing: 7) {
-            filterButton(nil, title: "Tout", symbol: "square.grid.2x2", showTitle: showTitles)
+            filterButton(
+                nil,
+                title: String(localized: "Tout"),
+                symbol: "square.grid.2x2",
+                showTitle: showTitles
+            )
             ForEach(ClipboardItemType.allCases.filter { $0 != .unknown }) { type in
                 filterButton(type, title: type.title, symbol: type.symbol, showTitle: showTitles)
             }

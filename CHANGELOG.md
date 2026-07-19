@@ -15,6 +15,8 @@ All notable changes to Clippy are documented here.
 - Configurable retention, deduplication, application exclusions, sensitive-content patterns, and ignored types.
 - Universal Apple silicon and Intel release packaging, notarization script, Homebrew cask template, and CI.
 - Twenty-three strict-concurrency unit and integration tests.
+- Complete English localization alongside French, selected automatically from the macOS language order.
+- CI validation that every extracted user-facing string has a complete English translation.
 
 ### Changed
 
@@ -24,6 +26,7 @@ All notable changes to Clippy are documented here.
 - Added transactional image writes, optimized thumbnails, decoded-image cache limits, and safe relative-path resolution.
 - Kept at least one visible access point when changing the menu bar and Dock settings.
 - Removed App Sandbox from Developer ID builds because Clippy’s user-authorized Accessibility workflow is incompatible with it.
+- Reorganized the English and French READMEs around a quick table of contents, Homebrew-first installation, first use, and troubleshooting.
 
 ### Fixed
 

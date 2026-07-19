@@ -62,7 +62,9 @@ final class AppState: ObservableObject {
             try FileManager.default.createDirectory(at: databaseDirectory, withIntermediateDirectories: true)
         } catch {
             initializationWarnings.append(
-                "Le dossier de données n’a pas pu être créé. L’historique ne sera pas persistant."
+                String(
+                    localized: "Le dossier de données n’a pas pu être créé. L’historique ne sera pas persistant."
+                )
             )
             Log.storage.error("Database directory creation failed: \(error.localizedDescription, privacy: .public)")
         }
@@ -78,7 +80,9 @@ final class AppState: ObservableObject {
         } catch {
             Log.storage.fault("Persistent store failed, using memory store: \(error.localizedDescription, privacy: .public)")
             initializationWarnings.append(
-                "La base locale n’a pas pu être ouverte. Cette session utilise un historique temporaire."
+                String(
+                    localized: "La base locale n’a pas pu être ouverte. Cette session utilise un historique temporaire."
+                )
             )
             guard let memoryContainer = try? ModelContainer(
                 for: schema,
@@ -215,13 +219,13 @@ final class AppState: ObservableObject {
     func copy(_ item: ClipboardItem, plainTextOnly: Bool = false) {
         Task {
             guard let change = await writer.write(item, plainTextOnly: plainTextOnly) else {
-                postNotice("Cet élément n’est plus disponible.", kind: .error)
+                postNotice(String(localized: "Cet élément n’est plus disponible."), kind: .error)
                 NSSound.beep()
                 return
             }
             monitor.suppress(changeCount: change)
             repository.markUsed(item)
-            postNotice("Copié dans le presse-papiers.")
+            postNotice(String(localized: "Copié dans le presse-papiers."))
         }
     }
 
@@ -231,7 +235,7 @@ final class AppState: ObservableObject {
         Task {
             defer { quickPanelSelectionInProgress = false }
             guard let change = await writer.write(item, plainTextOnly: plainTextOnly) else {
-                postNotice("Cet élément n’est plus disponible.", kind: .error)
+                postNotice(String(localized: "Cet élément n’est plus disponible."), kind: .error)
                 NSSound.beep()
                 return
             }
@@ -243,7 +247,9 @@ final class AppState: ObservableObject {
                 automaticPaste.refreshAuthorization()
                 if !automaticPaste.isAuthorized, !automaticPaste.requestAuthorization() {
                     postNotice(
-                        "L’élément est copié. Autorisez le collage automatique, puis sélectionnez-le à nouveau.",
+                        String(
+                            localized: "L’élément est copié. Autorisez le collage automatique, puis sélectionnez-le à nouveau."
+                        ),
                         kind: .warning,
                         duration: .seconds(8)
                     )
@@ -260,7 +266,7 @@ final class AppState: ObservableObject {
                     self?.handleAutomaticPasteOutcome(outcome)
                 }
             } else {
-                postNotice("Copié dans le presse-papiers.")
+                postNotice(String(localized: "Copié dans le presse-papiers."))
             }
         }
     }
@@ -291,24 +297,30 @@ final class AppState: ObservableObject {
         case .pasted:
             clearNotice()
         case .copiedOnly:
-            postNotice("Copié dans le presse-papiers.")
+            postNotice(String(localized: "Copié dans le presse-papiers."))
         case .permissionRequired:
             postNotice(
-                "L’élément est copié, mais macOS n’autorise pas encore le collage automatique.",
+                String(
+                    localized: "L’élément est copié, mais macOS n’autorise pas encore le collage automatique."
+                ),
                 kind: .warning,
                 duration: .seconds(8)
             )
             reopenQuickPanelAfterPasteFailure()
         case .targetUnavailable:
             postNotice(
-                "L’élément est copié, mais l’application précédente n’est plus disponible.",
+                String(
+                    localized: "L’élément est copié, mais l’application précédente n’est plus disponible."
+                ),
                 kind: .warning,
                 duration: .seconds(8)
             )
             reopenQuickPanelAfterPasteFailure()
         case .eventPostingFailed:
             postNotice(
-                "L’élément est copié, mais macOS n’a pas pu envoyer ⌘V. Collez-le manuellement ou réessayez.",
+                String(
+                    localized: "L’élément est copié, mais macOS n’a pas pu envoyer ⌘V. Collez-le manuellement ou réessayez."
+                ),
                 kind: .error,
                 duration: .seconds(8)
             )
@@ -338,10 +350,12 @@ final class AppState: ObservableObject {
     func confirmAndClearHistory() {
         let alert = NSAlert()
         alert.alertStyle = .warning
-        alert.messageText = "Vider l’historique non épinglé ?"
-        alert.informativeText = "Les éléments épinglés seront conservés. Cette action est irréversible."
-        alert.addButton(withTitle: "Vider")
-        alert.addButton(withTitle: "Annuler")
+        alert.messageText = String(localized: "Vider l’historique non épinglé ?")
+        alert.informativeText = String(
+            localized: "Les éléments épinglés seront conservés. Cette action est irréversible."
+        )
+        alert.addButton(withTitle: String(localized: "Vider"))
+        alert.addButton(withTitle: String(localized: "Annuler"))
         isPresentingModal = true
         let response = alert.runModal()
         isPresentingModal = false
@@ -354,7 +368,9 @@ final class AppState: ObservableObject {
         _ = repository.clear(includePinned: true)
         guard itemCount == 0 || repository.items.isEmpty else {
             postNotice(
-                "Les données n’ont pas été effacées, car la base locale n’a pas pu être mise à jour.",
+                String(
+                    localized: "Les données n’ont pas été effacées, car la base locale n’a pas pu être mise à jour."
+                ),
                 kind: .error,
                 duration: .seconds(8)
             )
@@ -365,10 +381,10 @@ final class AppState: ObservableObject {
         Task {
             do {
                 try await fileStorage.eraseAllFiles()
-                postNotice("Toutes les données locales ont été effacées.")
+                postNotice(String(localized: "Toutes les données locales ont été effacées."))
             } catch {
                 postNotice(
-                    "Certains fichiers locaux n’ont pas pu être effacés.",
+                    String(localized: "Certains fichiers locaux n’ont pas pu être effacés."),
                     kind: .error,
                     duration: .seconds(8)
                 )
@@ -405,8 +421,8 @@ final class AppState: ObservableObject {
             let samples: [ClipboardCapture] = [
                 ClipboardCapture(
                     type: .plainText,
-                    preview: "Une app macOS native, rapide et respectueuse de la vie privée.",
-                    content: "Une app macOS native, rapide et respectueuse de la vie privée.",
+                    preview: L10n.qaSampleText,
+                    content: L10n.qaSampleText,
                     richTextData: nil,
                     imageData: nil,
                     estimatedSize: 68,
@@ -467,13 +483,13 @@ final class AppState: ObservableObject {
                let stored = try? await fileStorage.storeImage(data) {
                 let capture = ClipboardCapture(
                     type: .image,
-                    preview: "Aperçu de l’interface Clippy",
+                    preview: L10n.qaImagePreview,
                     content: nil,
                     richTextData: nil,
                     imageData: data,
                     estimatedSize: Int64(data.count),
                     fingerprint: ClipboardHash.data(data),
-                    sourceApplication: "Aperçu",
+                    sourceApplication: L10n.qaPreviewApplication,
                     sourceBundleIdentifier: "com.apple.Preview"
                 )
                 _ = repository.record(capture, storedImage: stored, policy: .keepAll)
@@ -733,7 +749,7 @@ final class HistoryWindowController: NSObject, NSWindowDelegate {
             backing: .buffered,
             defer: false
         )
-        window.title = "Clippy — Historique"
+        window.title = String(localized: "Clippy — Historique")
         window.minSize = NSSize(width: 760, height: 520)
         window.isReleasedWhenClosed = false
         window.setFrameAutosaveName("Clippy.HistoryWindow")
@@ -762,7 +778,7 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
             backing: .buffered,
             defer: false
         )
-        window.title = "Clippy — Réglages"
+        window.title = String(localized: "Clippy — Réglages")
         window.minSize = NSSize(width: 620, height: 520)
         window.isReleasedWhenClosed = false
         window.setFrameAutosaveName("Clippy.SettingsWindow")

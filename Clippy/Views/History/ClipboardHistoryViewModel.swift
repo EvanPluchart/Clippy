@@ -6,7 +6,13 @@ final class ClipboardHistoryViewModel: ObservableObject {
     enum SortOrder: String, CaseIterable, Identifiable {
         case recent, oldest, mostUsed
         var id: String { rawValue }
-        var title: String { switch self { case .recent: "Plus récents"; case .oldest: "Plus anciens"; case .mostUsed: "Plus utilisés" } }
+        var title: String {
+            switch self {
+            case .recent: String(localized: "Plus récents")
+            case .oldest: String(localized: "Plus anciens")
+            case .mostUsed: String(localized: "Plus utilisés")
+            }
+        }
     }
 
     @Published var query = ""

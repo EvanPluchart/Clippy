@@ -44,8 +44,12 @@ jobs:
             -project Clippy.xcodeproj \
             -scheme Clippy \
             -configuration Release \
+            -derivedDataPath dist/DerivedData-CI \
             -destination 'generic/platform=macOS' \
             ARCHS='arm64 x86_64' \
             ONLY_ACTIVE_ARCH=NO \
             CODE_SIGNING_ALLOWED=NO \
             build
+
+      - name: Validate French and English localizations
+        run: ruby scripts/validate_localizations.rb dist/DerivedData-CI/Build/Intermediates.noindex

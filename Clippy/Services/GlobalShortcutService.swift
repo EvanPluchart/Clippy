@@ -16,7 +16,9 @@ final class GlobalShortcutService: ObservableObject {
     func register(configuration: ShortcutConfiguration, action: @escaping () -> Void) -> Bool {
         self.action = action
         guard configuration.isValid else {
-            conflictMessage = "Ajoutez Commande, Option ou Contrôle pour éviter de bloquer une touche normale."
+            conflictMessage = String(
+                localized: "Ajoutez Commande, Option ou Contrôle pour éviter de bloquer une touche normale."
+            )
             return false
         }
         if registeredConfiguration == configuration, hotKey != nil {
@@ -37,7 +39,9 @@ final class GlobalShortcutService: ObservableObject {
             &candidate
         )
         guard registration == noErr, let candidate else {
-            conflictMessage = "Ce raccourci est déjà utilisé par macOS ou une autre application."
+            conflictMessage = String(
+                localized: "Ce raccourci est déjà utilisé par macOS ou une autre application."
+            )
             return false
         }
 
@@ -62,7 +66,7 @@ final class GlobalShortcutService: ObservableObject {
             return noErr
         }, 1, &eventType, pointer, &eventHandler)
         guard status == noErr else {
-            conflictMessage = "Le gestionnaire de raccourci n’a pas pu être installé."
+            conflictMessage = String(localized: "Le gestionnaire de raccourci n’a pas pu être installé.")
             return false
         }
         return true

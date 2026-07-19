@@ -46,7 +46,9 @@ private struct GeneralSettings: View {
                 Toggle("Surveiller le presse-papiers", isOn: settings.monitoringEnabled)
                 LabeledContent("État") {
                     Label(
-                        state.monitor.isRunning ? "Surveillance active" : "Surveillance en pause",
+                        state.monitor.isRunning
+                            ? String(localized: "Surveillance active")
+                            : String(localized: "Surveillance en pause"),
                         systemImage: state.monitor.isRunning ? "checkmark.circle.fill" : "pause.circle"
                     )
                     .foregroundStyle(state.monitor.isRunning ? .green : .secondary)
@@ -136,11 +138,13 @@ private struct GeneralSettings: View {
             updated.launchAtLogin = loginStatus == .enabled
             state.settingsStore.update(updated)
             launchError = loginStatus == .requiresApproval
-                ? "Autorisez Clippy dans Réglages Système > Général > Ouverture."
+                ? String(localized: "Autorisez Clippy dans Réglages Système > Général > Ouverture.")
                 : nil
         } catch {
             loginStatus = LaunchAtLoginService.status
-            launchError = "macOS n’a pas pu modifier ce réglage : \(error.localizedDescription)"
+            launchError = String(
+                localized: "macOS n’a pas pu modifier ce réglage : \(error.localizedDescription)"
+            )
         }
     }
 }
@@ -215,8 +219,11 @@ private struct StorageSettings: View {
                 }
                 if let summary = state.cleanup.lastSummary {
                     Text(
-                        "Dernier nettoyage : \(summary.date.formatted(date: .abbreviated, time: .shortened)) · " +
-                        "\(summary.removedItems) élément(s) · \(summary.reclaimedBytes.formattedBytes) récupérés."
+                        L10n.cleanupSummary(
+                            date: summary.date.formatted(date: .abbreviated, time: .shortened),
+                            removedItems: summary.removedItems,
+                            reclaimedBytes: summary.reclaimedBytes.formattedBytes
+                        )
                     )
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -228,8 +235,9 @@ private struct StorageSettings: View {
 
             Section("Performance") {
                 Stepper(
-                    "Intervalle de vérification : " +
-                        "\(settings.wrappedValue.pollingInterval.formatted(.number.precision(.fractionLength(1)))) s",
+                    String(
+                        localized: "Intervalle de vérification : \(settings.wrappedValue.pollingInterval.formatted(.number.precision(.fractionLength(1)))) s"
+                    ),
                     value: settings.pollingInterval,
                     in: 0.3...2,
                     step: 0.1
@@ -293,7 +301,7 @@ private struct PrivacySettings: View {
                 .lineLimit(3...6)
                 if invalidPatternCount > 0 {
                     Label(
-                        "\(invalidPatternCount) expression(s) invalide(s) seront ignorées.",
+                        L10n.invalidExpressionCount(invalidPatternCount),
                         systemImage: "exclamationmark.triangle"
                     )
                     .font(.caption)
@@ -304,7 +312,9 @@ private struct PrivacySettings: View {
             Section("Collage automatique") {
                 LabeledContent("Autorisation macOS") {
                     Label(
-                        state.automaticPaste.isAuthorized ? "Autorisée" : "À autoriser",
+                        state.automaticPaste.isAuthorized
+                            ? String(localized: "Autorisée")
+                            : String(localized: "À autoriser"),
                         systemImage: state.automaticPaste.isAuthorized
                             ? "checkmark.circle.fill"
                             : "exclamationmark.circle"
@@ -396,7 +406,8 @@ private struct ShortcutSettings: View {
                 LabeledContent("Raccourci proposé", value: draft.display)
                 LabeledContent(
                     "Raccourci actif",
-                    value: state.shortcut.registeredConfiguration?.display ?? "Aucun"
+                    value: state.shortcut.registeredConfiguration?.display
+                        ?? String(localized: "Aucun")
                 )
 
                 if !draft.isValid {

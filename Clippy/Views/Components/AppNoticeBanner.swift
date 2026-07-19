@@ -21,7 +21,7 @@ struct AppNoticeBanner: View {
                     .frame(width: 22, height: 22)
             }
             .buttonStyle(.borderless)
-            .accessibilityLabel("Fermer le message")
+            .accessibilityLabel(String(localized: "Fermer le message"))
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
