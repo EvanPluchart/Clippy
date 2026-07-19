@@ -25,7 +25,9 @@
 - [ ] Sign with a Developer ID Application certificate.
 - [ ] Notarize and staple the app.
 - [ ] Verify Gatekeeper assessment on a clean macOS account or Mac.
-- [ ] Publish the ZIP, SHA-256 and dSYM.
+- [ ] Publish the DMG, SHA-256 and dSYM.
+- [ ] Verify the Retina DMG layout, drag-to-Applications flow and first launch
+      from a downloaded copy.
 - [ ] Publish the generated Cask to `EvanPluchart/homebrew-tap`.
 - [ ] Test `brew install --cask EvanPluchart/tap/clippy`.
 
@@ -34,5 +36,7 @@
 - [x] Add final light and dark screenshots to the README.
 - [x] Choose and add the repository license.
 - [x] Enable GitHub Private Vulnerability Reporting.
-- [ ] Create the `v1.2.0` GitHub release from `CHANGELOG.md`.
+- [x] Create the source-only `v1.2.0` GitHub release from `CHANGELOG.md`.
+- [x] Publish the bilingual website at `clippy.evanpluchart.fr`.
+- [ ] Create and publish the signed `v1.3.0` GitHub release.
 - [ ] Add the repository and Homebrew links to the portfolio.

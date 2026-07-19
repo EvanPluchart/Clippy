@@ -9,6 +9,8 @@
 </p>
 
 <p align="center">
+  <a href="https://clippy.evanpluchart.fr">Website</a>
+  ·
   <a href="README.fr.md">Français</a>
   ·
   <a href="CHANGELOG.md">Changelog</a>
@@ -44,7 +46,15 @@ Clippy adds a native `⌘⇧V` clipboard picker to macOS. It stays quietly in th
 
 ## Install
 
-### Homebrew — recommended
+### Direct download — easiest
+
+Download the latest signed and notarized DMG from [clippy.evanpluchart.fr](https://clippy.evanpluchart.fr), open it, then drag Clippy into Applications.
+
+![Clippy drag-to-Applications installer](Docs/Images/installer.jpg)
+
+If the website still shows “Download coming soon”, the signed release has not been published yet. Source builds remain available below.
+
+### Homebrew — recommended for Terminal users
 
 ```sh
 brew install --cask EvanPluchart/tap/clippy
@@ -168,7 +178,7 @@ Sensitive-content detection is defensive, not a security boundary. Review the pr
 
 ## Languages
 
-Clippy 1.2 is available in English and French. The app automatically follows the preferred language configured in macOS and falls back to French when no supported language is selected.
+Clippy 1.3 is available in English and French. The app automatically follows the preferred language configured in macOS and falls back to French when no supported language is selected.
 
 ## Development
 
@@ -215,7 +225,7 @@ Original images are stored as normalized PNG files. Small JPEG thumbnails and a 
 
 ## Release
 
-`scripts/release.sh` runs strict tests, creates a universal archive, signs it with Developer ID, validates entitlements, submits it for notarization, staples the ticket, produces the release ZIP and SHA-256, and generates the Homebrew Cask.
+`scripts/release.sh` runs strict tests, creates a universal archive, signs it with Developer ID, validates entitlements, notarizes and staples both the app and DMG, verifies Gatekeeper, produces the DMG and SHA-256, and generates the Homebrew Cask.
 
 ```sh
 SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" \
