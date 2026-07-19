@@ -11,15 +11,46 @@ enum AutomaticPasteOutcome: Equatable {
     case eventPostingFailed
 }
 
+enum AutomaticPasteAuthorizationResult: Equatable {
+    case authorized
+    case systemSettingsOpened
+    case systemSettingsUnavailable
+}
+
 @MainActor
 final class AutomaticPasteService: ObservableObject {
-    @Published private(set) var isAuthorized = CGPreflightPostEventAccess()
+    @Published private(set) var isAuthorized: Bool
     @Published private(set) var lastOutcome: AutomaticPasteOutcome?
 
+    private let preflightPostEventAccess: () -> Bool
+    private let requestPostEventAccess: () -> Bool
+    private let openAccessibilitySettings: () -> Bool
     private var requestedPermissionThisSession = false
 
+    init(
+        preflightPostEventAccess: @escaping () -> Bool = {
+            CGPreflightPostEventAccess()
+        },
+        requestPostEventAccess: @escaping () -> Bool = {
+            CGRequestPostEventAccess()
+        },
+        openAccessibilitySettings: @escaping () -> Bool = {
+            guard let url = URL(
+                string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"
+            ) else {
+                return false
+            }
+            return NSWorkspace.shared.open(url)
+        }
+    ) {
+        self.preflightPostEventAccess = preflightPostEventAccess
+        self.requestPostEventAccess = requestPostEventAccess
+        self.openAccessibilitySettings = openAccessibilitySettings
+        isAuthorized = preflightPostEventAccess()
+    }
+
     func refreshAuthorization() {
-        isAuthorized = CGPreflightPostEventAccess()
+        isAuthorized = preflightPostEventAccess()
         if isAuthorized, lastOutcome == .permissionRequired {
             lastOutcome = nil
         }
@@ -28,13 +59,33 @@ final class AutomaticPasteService: ObservableObject {
     @discardableResult
     func requestAuthorization() -> Bool {
         requestedPermissionThisSession = true
-        let granted = CGRequestPostEventAccess()
-        isAuthorized = granted || CGPreflightPostEventAccess()
-        if !isAuthorized { lastOutcome = .permissionRequired }
+        let granted = requestPostEventAccess()
+        isAuthorized = granted || preflightPostEventAccess()
+        if isAuthorized {
+            if lastOutcome == .permissionRequired {
+                lastOutcome = nil
+            }
+        } else {
+            lastOutcome = .permissionRequired
+        }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) { [weak self] in
             self?.refreshAuthorization()
         }
         return isAuthorized
+    }
+
+    @discardableResult
+    func requestAuthorizationFromUser() -> AutomaticPasteAuthorizationResult {
+        refreshAuthorization()
+        if isAuthorized {
+            return .authorized
+        }
+        if requestAuthorization() {
+            return .authorized
+        }
+        return openAccessibilitySettings()
+            ? .systemSettingsOpened
+            : .systemSettingsUnavailable
     }
 
     func restoreFocus(

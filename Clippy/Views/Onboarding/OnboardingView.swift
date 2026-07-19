@@ -141,8 +141,8 @@ struct OnboardingView: View {
             }
             Spacer()
             if !state.automaticPaste.isAuthorized {
-                Button("Autoriser") {
-                    _ = state.automaticPaste.requestAuthorization()
+                Button("Ouvrir les réglages") {
+                    state.requestAutomaticPasteAuthorization()
                 }
             }
         }

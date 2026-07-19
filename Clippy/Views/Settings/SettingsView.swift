@@ -326,8 +326,8 @@ private struct PrivacySettings: View {
                     .foregroundStyle(.secondary)
                 HStack {
                     if !state.automaticPaste.isAuthorized {
-                        Button("Demander l’autorisation") {
-                            _ = state.automaticPaste.requestAuthorization()
+                        Button("Ouvrir les réglages") {
+                            state.requestAutomaticPasteAuthorization()
                         }
                     }
                     Button("Actualiser l’état") {

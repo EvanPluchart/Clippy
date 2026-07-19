@@ -37,6 +37,58 @@ final class ClipboardCoreTests: XCTestCase {
         XCTAssertNil(QuickPanelController.numericIndex(forKeyCode: 9))
     }
 
+    @MainActor
+    func testAutomaticPasteAuthorizationReturnsImmediatelyWhenGranted() {
+        var requestCount = 0
+        var settingsOpenCount = 0
+        let service = AutomaticPasteService(
+            preflightPostEventAccess: { true },
+            requestPostEventAccess: {
+                requestCount += 1
+                return true
+            },
+            openAccessibilitySettings: {
+                settingsOpenCount += 1
+                return true
+            }
+        )
+
+        XCTAssertEqual(service.requestAuthorizationFromUser(), .authorized)
+        XCTAssertTrue(service.isAuthorized)
+        XCTAssertEqual(requestCount, 0)
+        XCTAssertEqual(settingsOpenCount, 0)
+    }
+
+    @MainActor
+    func testAutomaticPasteAuthorizationOpensSettingsWhenPermissionIsMissing() {
+        var settingsOpenCount = 0
+        let service = AutomaticPasteService(
+            preflightPostEventAccess: { false },
+            requestPostEventAccess: { false },
+            openAccessibilitySettings: {
+                settingsOpenCount += 1
+                return true
+            }
+        )
+
+        XCTAssertEqual(service.requestAuthorizationFromUser(), .systemSettingsOpened)
+        XCTAssertFalse(service.isAuthorized)
+        XCTAssertEqual(service.lastOutcome, .permissionRequired)
+        XCTAssertEqual(settingsOpenCount, 1)
+    }
+
+    @MainActor
+    func testAutomaticPasteAuthorizationReportsSettingsFailure() {
+        let service = AutomaticPasteService(
+            preflightPostEventAccess: { false },
+            requestPostEventAccess: { false },
+            openAccessibilitySettings: { false }
+        )
+
+        XCTAssertEqual(service.requestAuthorizationFromUser(), .systemSettingsUnavailable)
+        XCTAssertFalse(service.isAuthorized)
+    }
+
     func testTextNormalizationAndStableHash() {
         XCTAssertEqual(ClipboardNormalizer.text("  café\r\n"), "café")
         XCTAssertEqual(ClipboardHash.string(ClipboardNormalizer.text(" café ")),

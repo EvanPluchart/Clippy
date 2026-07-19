@@ -1061,6 +1061,16 @@
         }
       }
     },
+    "Impossible d’ouvrir les réglages Accessibilité. Ouvrez Réglages Système > Confidentialité et sécurité > Accessibilité." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clippy couldn’t open Accessibility settings. Open System Settings > Privacy & Security > Accessibility."
+          }
+        }
+      }
+    },
     "Indéfiniment" : {
       "localizations" : {
         "en" : {

@@ -4,6 +4,17 @@ All notable changes to Clippy are documented here.
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-07-19
+
+### Fixed
+
+- Made every automatic-paste permission button open the correct macOS
+  Accessibility settings screen when the native permission request remains
+  unresolved.
+- Closed the quick panel before handing off to System Settings and refreshed
+  authorization whenever the panel opens or Clippy becomes active again.
+- Added strict tests for granted, missing, and unavailable permission flows.
+
 ## [1.3.0] - 2026-07-19
 
 ### Added
@@ -62,6 +73,7 @@ All notable changes to Clippy are documented here.
 - Existing history and preferences not following users when upgrading from the earlier sandboxed build.
 - Reopening the menu-bar-only app from Finder or Applications not presenting the history window.
 
-[Unreleased]: https://github.com/EvanPluchart/Clippy/compare/v1.3.0...HEAD
+[Unreleased]: https://github.com/EvanPluchart/Clippy/compare/v1.3.1...HEAD
+[1.3.1]: https://github.com/EvanPluchart/Clippy/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/EvanPluchart/Clippy/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/EvanPluchart/Clippy/releases/tag/v1.2.0

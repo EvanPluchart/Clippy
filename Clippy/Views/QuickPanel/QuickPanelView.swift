@@ -217,8 +217,8 @@ struct QuickPanelView: View {
                 .foregroundStyle(.secondary)
                 .lineLimit(2)
             Spacer()
-            Button("Autoriser") {
-                _ = state.automaticPaste.requestAuthorization()
+            Button("Ouvrir les réglages") {
+                state.requestAutomaticPasteAuthorization()
             }
             .controlSize(.small)
         }
@@ -243,6 +243,7 @@ struct QuickPanelView: View {
     }
 
     private func resetForPresentation() {
+        state.automaticPaste.refreshAuthorization()
         confirmClear = false
         model.query = ""
         model.filter = nil
