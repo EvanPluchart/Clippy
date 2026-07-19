@@ -75,10 +75,10 @@ app_settings = {
   "CODE_SIGN_ENTITLEMENTS" => "Clippy/Resources/Clippy.entitlements", "CODE_SIGN_STYLE" => "Automatic",
   "ASSETCATALOG_COMPILER_APPICON_NAME" => "AppIcon",
   "ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS" => "YES",
-  "COMBINE_HIDPI_IMAGES" => "YES", "CURRENT_PROJECT_VERSION" => "9", "DEVELOPMENT_TEAM" => '""',
+  "COMBINE_HIDPI_IMAGES" => "YES", "CURRENT_PROJECT_VERSION" => "10", "DEVELOPMENT_TEAM" => '""',
   "ENABLE_APP_SANDBOX" => "NO", "ENABLE_HARDENED_RUNTIME" => "YES",
   "GENERATE_INFOPLIST_FILE" => "NO", "INFOPLIST_FILE" => "Clippy/Resources/Info.plist",
-  "LD_RUNPATH_SEARCH_PATHS" => '"$(inherited) @executable_path/../Frameworks"', "MARKETING_VERSION" => "1.3.0",
+  "LD_RUNPATH_SEARCH_PATHS" => '"$(inherited) @executable_path/../Frameworks"', "MARKETING_VERSION" => "1.3.1",
   "PRODUCT_BUNDLE_IDENTIFIER" => "com.evpl.clippy", "PRODUCT_NAME" => '"$(TARGET_NAME)"', "SWIFT_EMIT_LOC_STRINGS" => "YES"
 }
 test_settings = {

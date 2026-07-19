@@ -185,6 +185,20 @@ final class AppState: ObservableObject {
         quickPanel.hide()
     }
 
+    func requestAutomaticPasteAuthorization() {
+        quickPanel.hide()
+        let result = automaticPaste.requestAuthorizationFromUser()
+        guard result == .systemSettingsUnavailable else { return }
+        postNotice(
+            String(
+                localized: "Impossible d’ouvrir les réglages Accessibilité. Ouvrez Réglages Système > Confidentialité et sécurité > Accessibilité."
+            ),
+            kind: .error,
+            duration: .seconds(10)
+        )
+        NSSound.beep()
+    }
+
     func showHistory() {
         quickPanel.hide()
         historyWindow.show(state: self)
