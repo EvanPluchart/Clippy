@@ -4,7 +4,7 @@ All notable changes to Clippy are documented here.
 
 ## [Unreleased]
 
-## [1.3.1] - 2026-07-19
+## [1.3.1] - 2026-07-20
 
 ### Fixed
 
@@ -13,6 +13,10 @@ All notable changes to Clippy are documented here.
   unresolved.
 - Closed the quick panel before handing off to System Settings and refreshed
   authorization whenever the panel opens or Clippy becomes active again.
+- Added a guided relaunch after Accessibility approval for macOS installations
+  that only apply the permission after Clippy restarts.
+- Kept that relaunch silent so the full history window does not interrupt the
+  app the user was working in.
 - Added strict tests for granted, missing, and unavailable permission flows.
 
 ## [1.3.0] - 2026-07-19
