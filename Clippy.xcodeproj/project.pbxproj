@@ -12,6 +12,7 @@
 		2EE201007107321F27BA494A /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 488C68C5FE5148D36924CF2F /* AppSettings.swift */; };
 		88CA97F6DF4A0A0D38888750 /* ClipboardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5926F8BF294AE6FBAA4985BC /* ClipboardItem.swift */; };
 		8258D503954F003AAACEBBB3 /* ClipboardRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E73A78250A6FA5892180F6 /* ClipboardRepository.swift */; };
+		ABC6577C196DC0B77378BAB4 /* ApplicationRelauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4530FC52F2C074188CE0DB08 /* ApplicationRelauncher.swift */; };
 		33727D8684F529E89F063EF9 /* AutomaticPasteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A6908C9AA9D2A454CA88D7 /* AutomaticPasteService.swift */; };
 		A22500F93329969F660ADDF1 /* ClipboardCleanupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8720A144B5377C57C95B6A6A /* ClipboardCleanupService.swift */; };
 		692870A40BD6821DD4D036A2 /* ClipboardFileStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B05FF3A1461826C9864227D /* ClipboardFileStorage.swift */; };
@@ -49,6 +50,7 @@
 		488C68C5FE5148D36924CF2F /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Clippy/Models/AppSettings.swift"; sourceTree = SOURCE_ROOT; };
 		5926F8BF294AE6FBAA4985BC /* ClipboardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Clippy/Models/ClipboardItem.swift"; sourceTree = SOURCE_ROOT; };
 		D2E73A78250A6FA5892180F6 /* ClipboardRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Clippy/Repositories/ClipboardRepository.swift"; sourceTree = SOURCE_ROOT; };
+		4530FC52F2C074188CE0DB08 /* ApplicationRelauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Clippy/Services/ApplicationRelauncher.swift"; sourceTree = SOURCE_ROOT; };
 		51A6908C9AA9D2A454CA88D7 /* AutomaticPasteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Clippy/Services/AutomaticPasteService.swift"; sourceTree = SOURCE_ROOT; };
 		8720A144B5377C57C95B6A6A /* ClipboardCleanupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Clippy/Services/ClipboardCleanupService.swift"; sourceTree = SOURCE_ROOT; };
 		8B05FF3A1461826C9864227D /* ClipboardFileStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Clippy/Services/ClipboardFileStorage.swift"; sourceTree = SOURCE_ROOT; };
@@ -94,6 +96,7 @@
 				488C68C5FE5148D36924CF2F /* AppSettings.swift */,
 				5926F8BF294AE6FBAA4985BC /* ClipboardItem.swift */,
 				D2E73A78250A6FA5892180F6 /* ClipboardRepository.swift */,
+				4530FC52F2C074188CE0DB08 /* ApplicationRelauncher.swift */,
 				51A6908C9AA9D2A454CA88D7 /* AutomaticPasteService.swift */,
 				8720A144B5377C57C95B6A6A /* ClipboardCleanupService.swift */,
 				8B05FF3A1461826C9864227D /* ClipboardFileStorage.swift */,
@@ -155,6 +158,7 @@
 				2EE201007107321F27BA494A /* AppSettings.swift in Sources */,
 				88CA97F6DF4A0A0D38888750 /* ClipboardItem.swift in Sources */,
 				8258D503954F003AAACEBBB3 /* ClipboardRepository.swift in Sources */,
+				ABC6577C196DC0B77378BAB4 /* ApplicationRelauncher.swift in Sources */,
 				33727D8684F529E89F063EF9 /* AutomaticPasteService.swift in Sources */,
 				A22500F93329969F660ADDF1 /* ClipboardCleanupService.swift in Sources */,
 				692870A40BD6821DD4D036A2 /* ClipboardFileStorage.swift in Sources */,
@@ -220,7 +224,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -286,7 +290,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;

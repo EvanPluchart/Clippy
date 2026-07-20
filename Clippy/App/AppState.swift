@@ -199,6 +199,23 @@ final class AppState: ObservableObject {
         NSSound.beep()
     }
 
+    func relaunchAfterAutomaticPasteAuthorization() {
+        quickPanel.hide()
+        do {
+            try ApplicationRelauncher.relaunch()
+        } catch {
+            postNotice(
+                String(
+                    localized: "Clippy n’a pas pu se relancer. Quittez-la puis rouvrez-la manuellement."
+                ),
+                kind: .error,
+                duration: .seconds(10)
+            )
+            Log.general.error("Application relaunch failed: \(error.localizedDescription, privacy: .public)")
+            NSSound.beep()
+        }
+    }
+
     func showHistory() {
         quickPanel.hide()
         historyWindow.show(state: self)

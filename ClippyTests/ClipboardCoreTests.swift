@@ -55,6 +55,7 @@ final class ClipboardCoreTests: XCTestCase {
 
         XCTAssertEqual(service.requestAuthorizationFromUser(), .authorized)
         XCTAssertTrue(service.isAuthorized)
+        XCTAssertFalse(service.requiresRelaunchAfterAuthorization)
         XCTAssertEqual(requestCount, 0)
         XCTAssertEqual(settingsOpenCount, 0)
     }
@@ -74,6 +75,7 @@ final class ClipboardCoreTests: XCTestCase {
         XCTAssertEqual(service.requestAuthorizationFromUser(), .systemSettingsOpened)
         XCTAssertFalse(service.isAuthorized)
         XCTAssertEqual(service.lastOutcome, .permissionRequired)
+        XCTAssertTrue(service.requiresRelaunchAfterAuthorization)
         XCTAssertEqual(settingsOpenCount, 1)
     }
 
@@ -87,6 +89,54 @@ final class ClipboardCoreTests: XCTestCase {
 
         XCTAssertEqual(service.requestAuthorizationFromUser(), .systemSettingsUnavailable)
         XCTAssertFalse(service.isAuthorized)
+        XCTAssertFalse(service.requiresRelaunchAfterAuthorization)
+    }
+
+    @MainActor
+    func testAutomaticPasteAuthorizationClearsRelaunchWhenPermissionBecomesAvailable() {
+        var isAuthorized = false
+        let service = AutomaticPasteService(
+            preflightPostEventAccess: { isAuthorized },
+            requestPostEventAccess: { false },
+            openAccessibilitySettings: { true }
+        )
+
+        XCTAssertEqual(service.requestAuthorizationFromUser(), .systemSettingsOpened)
+        XCTAssertTrue(service.requiresRelaunchAfterAuthorization)
+
+        isAuthorized = true
+        service.refreshAuthorization()
+
+        XCTAssertTrue(service.isAuthorized)
+        XCTAssertFalse(service.requiresRelaunchAfterAuthorization)
+    }
+
+    func testApplicationRelauncherPassesProcessAndBundlePathAsShellArguments() {
+        let arguments = ApplicationRelauncher.helperArguments(
+            processIdentifier: 42,
+            applicationPath: "/Applications/Clippy Test.app"
+        )
+
+        XCTAssertEqual(arguments[0], "-c")
+        XCTAssertEqual(arguments[1], ApplicationRelauncher.helperScript)
+        XCTAssertEqual(arguments[2], "clippy-relauncher")
+        XCTAssertEqual(arguments[3], "42")
+        XCTAssertEqual(arguments[4], "/Applications/Clippy Test.app")
+        XCTAssertEqual(arguments[5], ApplicationRelauncher.relaunchArgument)
+    }
+
+    func testApplicationRelauncherHelperHasValidShellSyntax() throws {
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: "/bin/sh")
+        process.arguments = ["-n", "-c", ApplicationRelauncher.helperScript]
+        process.standardInput = FileHandle.nullDevice
+        process.standardOutput = FileHandle.nullDevice
+        process.standardError = FileHandle.nullDevice
+
+        try process.run()
+        process.waitUntilExit()
+
+        XCTAssertEqual(process.terminationStatus, 0)
     }
 
     func testTextNormalizationAndStableHash() {

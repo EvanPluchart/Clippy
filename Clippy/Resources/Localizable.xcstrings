@@ -591,6 +591,16 @@
         }
       }
     },
+    "Clippy n’a pas pu se relancer. Quittez-la puis rouvrez-la manuellement." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clippy couldn’t relaunch. Quit it, then open it again manually."
+          }
+        }
+      }
+    },
     "Clippy utilise l’autorisation Accessibilité uniquement pour envoyer ⌘V à l’app précédente." : {
       "localizations" : {
         "en" : {
@@ -807,6 +817,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Local Data"
+          }
+        }
+      }
+    },
+    "Dans Réglages système, activez Clippy. Si elle est déjà activée, désactivez-la puis réactivez-la avant de relancer Clippy." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In System Settings, enable Clippy. If it is already enabled, turn it off and back on before relaunching Clippy."
           }
         }
       }
@@ -1527,6 +1547,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Recommended to keep the shortcut available at all times."
+          }
+        }
+      }
+    },
+    "Relancer Clippy" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Relaunch Clippy"
           }
         }
       }

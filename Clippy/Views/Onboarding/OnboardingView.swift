@@ -135,14 +135,25 @@ struct OnboardingView: View {
                         : String(localized: "Autorisez le collage automatique")
                 )
                 .font(.headline)
-                Text("Clippy utilise l’autorisation Accessibilité uniquement pour envoyer ⌘V à l’app précédente.")
+                Text(
+                    state.automaticPaste.requiresRelaunchAfterAuthorization
+                        ? String(localized: "Dans Réglages système, activez Clippy. Si elle est déjà activée, désactivez-la puis réactivez-la avant de relancer Clippy.")
+                        : String(localized: "Clippy utilise l’autorisation Accessibilité uniquement pour envoyer ⌘V à l’app précédente.")
+                )
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
             Spacer()
             if !state.automaticPaste.isAuthorized {
-                Button("Ouvrir les réglages") {
-                    state.requestAutomaticPasteAuthorization()
+                if state.automaticPaste.requiresRelaunchAfterAuthorization {
+                    Button("Relancer Clippy") {
+                        state.relaunchAfterAutomaticPasteAuthorization()
+                    }
+                } else {
+                    Button("Ouvrir les réglages") {
+                        state.requestAutomaticPasteAuthorization()
+                    }
                 }
             }
         }

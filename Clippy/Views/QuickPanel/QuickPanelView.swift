@@ -212,15 +212,26 @@ struct QuickPanelView: View {
         HStack(spacing: 8) {
             Image(systemName: "exclamationmark.shield")
                 .foregroundStyle(.orange)
-            Text("Autorisez le collage automatique pour coller directement dans l’app précédente.")
+            Text(
+                state.automaticPaste.requiresRelaunchAfterAuthorization
+                    ? String(localized: "Dans Réglages système, activez Clippy. Si elle est déjà activée, désactivez-la puis réactivez-la avant de relancer Clippy.")
+                    : String(localized: "Autorisez le collage automatique pour coller directement dans l’app précédente.")
+            )
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .lineLimit(2)
             Spacer()
-            Button("Ouvrir les réglages") {
-                state.requestAutomaticPasteAuthorization()
+            if state.automaticPaste.requiresRelaunchAfterAuthorization {
+                Button("Relancer Clippy") {
+                    state.relaunchAfterAutomaticPasteAuthorization()
+                }
+                .controlSize(.small)
+            } else {
+                Button("Ouvrir les réglages") {
+                    state.requestAutomaticPasteAuthorization()
+                }
+                .controlSize(.small)
             }
-            .controlSize(.small)
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 8)

@@ -21,6 +21,7 @@ enum AutomaticPasteAuthorizationResult: Equatable {
 final class AutomaticPasteService: ObservableObject {
     @Published private(set) var isAuthorized: Bool
     @Published private(set) var lastOutcome: AutomaticPasteOutcome?
+    @Published private(set) var requiresRelaunchAfterAuthorization = false
 
     private let preflightPostEventAccess: () -> Bool
     private let requestPostEventAccess: () -> Bool
@@ -51,8 +52,11 @@ final class AutomaticPasteService: ObservableObject {
 
     func refreshAuthorization() {
         isAuthorized = preflightPostEventAccess()
-        if isAuthorized, lastOutcome == .permissionRequired {
-            lastOutcome = nil
+        if isAuthorized {
+            requiresRelaunchAfterAuthorization = false
+            if lastOutcome == .permissionRequired {
+                lastOutcome = nil
+            }
         }
     }
 
@@ -62,6 +66,7 @@ final class AutomaticPasteService: ObservableObject {
         let granted = requestPostEventAccess()
         isAuthorized = granted || preflightPostEventAccess()
         if isAuthorized {
+            requiresRelaunchAfterAuthorization = false
             if lastOutcome == .permissionRequired {
                 lastOutcome = nil
             }
@@ -83,9 +88,12 @@ final class AutomaticPasteService: ObservableObject {
         if requestAuthorization() {
             return .authorized
         }
-        return openAccessibilitySettings()
-            ? .systemSettingsOpened
-            : .systemSettingsUnavailable
+        guard openAccessibilitySettings() else {
+            requiresRelaunchAfterAuthorization = false
+            return .systemSettingsUnavailable
+        }
+        requiresRelaunchAfterAuthorization = true
+        return .systemSettingsOpened
     }
 
     func restoreFocus(

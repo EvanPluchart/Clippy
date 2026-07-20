@@ -25,6 +25,10 @@ struct ClippyApp: App {
 }
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
+    private var shouldSuppressNextReopen = ProcessInfo.processInfo.arguments.contains(
+        ApplicationRelauncher.relaunchArgument
+    )
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         AppState.shared.start()
         #if DEBUG || QA
@@ -81,9 +85,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { false }
 
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        let shouldSuppress = AppState.shared.shouldSuppressApplicationReopen || shouldSuppressNextReopen
+        shouldSuppressNextReopen = false
         if Self.shouldShowHistoryOnReopen(
             hasVisibleWindows: flag,
-            shouldSuppress: AppState.shared.shouldSuppressApplicationReopen
+            shouldSuppress: shouldSuppress
         ) {
             AppState.shared.showHistory()
         }

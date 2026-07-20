@@ -321,13 +321,23 @@ private struct PrivacySettings: View {
                     )
                     .foregroundStyle(state.automaticPaste.isAuthorized ? .green : .orange)
                 }
-                Text("L’autorisation Accessibilité sert uniquement à envoyer ⌘V à l’application utilisée avant Clippy.")
+                Text(
+                    state.automaticPaste.requiresRelaunchAfterAuthorization
+                        ? String(localized: "Dans Réglages système, activez Clippy. Si elle est déjà activée, désactivez-la puis réactivez-la avant de relancer Clippy.")
+                        : String(localized: "L’autorisation Accessibilité sert uniquement à envoyer ⌘V à l’application utilisée avant Clippy.")
+                )
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 HStack {
                     if !state.automaticPaste.isAuthorized {
-                        Button("Ouvrir les réglages") {
-                            state.requestAutomaticPasteAuthorization()
+                        if state.automaticPaste.requiresRelaunchAfterAuthorization {
+                            Button("Relancer Clippy") {
+                                state.relaunchAfterAutomaticPasteAuthorization()
+                            }
+                        } else {
+                            Button("Ouvrir les réglages") {
+                                state.requestAutomaticPasteAuthorization()
+                            }
                         }
                     }
                     Button("Actualiser l’état") {
